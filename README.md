@@ -34,7 +34,7 @@ via symlink.  `$SKETCHBOOK_DIR` is your Arduino sketchbook directory, perhaps
    1. __(Option 1 - using Git)__ Clone this Git repo into your plugin directory.
       From the command line,
 
-       `git clone https://github.com/cdisselkoen/Kaleidoscope-Hardware-Virtual`
+       `git clone https://github.com/keyboardio/Kaleidoscope-Hardware-Virtual`
 
    1. __(Option 2 - no Git or command-line required)__ Click the green "Clone or download"
       button at the top right of this page, and select "Download ZIP".  Then, unzip the
