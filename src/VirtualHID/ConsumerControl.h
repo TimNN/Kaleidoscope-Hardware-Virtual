@@ -27,10 +27,14 @@ class ConsumerControl_ {
     void press(uint16_t m);
     void release(uint16_t m);
     void releaseAll(void);
-    void sendReport(void* data, int length);
+    void sendReport(void);
 
   protected:
     HID_ConsumerControlReport_Data_t _report;
+    HID_ConsumerControlReport_Data_t _lastReport;
+
+  private:
+    void sendReportUnchecked(void);
 };
 
 extern ConsumerControl_ ConsumerControl;

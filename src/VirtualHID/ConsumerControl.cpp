@@ -3,11 +3,10 @@
 #include "virtual_io.h"
 
 ConsumerControl_::ConsumerControl_(void) {}
-void ConsumerControl_::begin(void) { releaseAll(); }
-void ConsumerControl_::end(void) { releaseAll(); }
+void ConsumerControl_::begin(void) { end(); }
+void ConsumerControl_::end(void) { releaseAll(); sendReport(); }
 void ConsumerControl_::releaseAll(void) {
   memset(&_report, 0, sizeof(_report));
-  sendReport(&_report, sizeof(_report));
 }
 
 // write(), press(), and release() are essentially taken directly from KeyboardioHID
@@ -23,7 +22,6 @@ void ConsumerControl_::press(uint16_t m) {
       break;
     }
   }
-  sendReport(&_report, sizeof(_report));
 }
 void ConsumerControl_::release(uint16_t m) {
   // search and release the keypress
@@ -33,12 +31,21 @@ void ConsumerControl_::release(uint16_t m) {
       // no break to delete multiple keys
     }
   }
-  sendReport(&_report, sizeof(_report));
 }
 
-void ConsumerControl_::sendReport(void* data, int length) {
+void ConsumerControl_::sendReport() {
+  // Only send the report if different from last report
+  // (following KeyboardioHID - see comments there)
+  if(memcmp(&_lastReport, &_report, sizeof(_report)) == 0)
+    return;
+
+  sendReportUnchecked();
+  memcpy(&_lastReport, &_report, sizeof(_report));
+}
+
+void ConsumerControl_::sendReportUnchecked() {
   std::cout << "A virtual ConsumerControl HID report was sent." << std::endl;
-  logUSBEvent("ConsumerControl HID report", data, length);
+  logUSBEvent("ConsumerControl HID report", &_report, sizeof(_report));
 }
 
 ConsumerControl_ ConsumerControl;

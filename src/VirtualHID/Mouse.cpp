@@ -3,51 +3,53 @@
 #include "virtual_io.h"
 
 Mouse_::Mouse_(void) {}
-void Mouse_::begin(void) { releaseAll(); }
-void Mouse_::end(void) { releaseAll(); }
+void Mouse_::begin(void) { end(); }
+void Mouse_::end(void) { releaseAll(); sendReport(); }
+
 void Mouse_::releaseAll(void) {
-  _buttons = 0;
-  move(0,0,0);
+  memset(&report, 0, sizeof(report));
 }
 
 void Mouse_::click(uint8_t b) {
-  _buttons = b;
-  move(0,0,0);
-  _buttons = 0;
-  move(0,0,0);
+  press(b);
+  sendReport();
+  release(b);
 }
 
-void Mouse_::move(signed char x, signed char y, signed char wheel) {
-  HID_MouseReport_Data_t report;
-  report.buttons = _buttons;
+void Mouse_::move(signed char x, signed char y, signed char vWheel, signed char hWheel) {
   report.xAxis = x;
   report.yAxis = y;
-  report.wheel = wheel;
-  sendReport(&report, sizeof(report));
-}
-
-void Mouse_::buttons(uint8_t b) {
-  if (b != _buttons) {
-    _buttons = b;
-    move(0,0,0);
-  }
+  report.vWheel = vWheel;
+  report.hWheel = hWheel;
 }
 
 void Mouse_::press(uint8_t b) {
-  buttons(_buttons | b);
+  report.buttons |= b;
 }
 
 void Mouse_::release(uint8_t b) {
-  buttons(_buttons & ~b);
+  report.buttons &= ~b;
 }
 
 bool Mouse_::isPressed(uint8_t b) {
-  return ((b & _buttons) > 0);
+  return ((b & report.buttons) > 0);
 }
 
-void Mouse_::sendReport(void* data, int length) {
+void Mouse_::sendReport() {
+  // Don't send if last report and this report are both empty
+  // (following behavior in KeyboardioHID - see comments there)
+  static HID_MouseReport_Data_t emptyReport;
+  if(memcmp(&lastReport, &report, sizeof(report)) == 0 &&
+     memcmp(&report, &emptyReport, sizeof(report)) == 0)
+    return;
+
+  sendReportUnchecked();
+  memcpy(&lastReport, &report, sizeof(report));
+}
+
+void Mouse_::sendReportUnchecked() {
   std::cout << "A virtual Mouse HID report was sent." << std::endl;
-  logUSBEvent("Mouse HID report", data, length);
+  logUSBEvent("Mouse HID report", &report, sizeof(report));
 }
 
 Mouse_ Mouse;
