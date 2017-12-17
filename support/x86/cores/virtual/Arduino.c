@@ -1,25 +1,32 @@
 #include "Arduino.h"
+#include "virtual_io.h"
 
-// TODO: better time emulation
-// this is pretty hacky, but hopefully helps most code behave sanely
+// Estimate that a scan cycle takes this many ms on real hardware
+#define MILLIS_PER_CYCLE 5
+
+// This time emulation has the effect that millis() only updates once per scan cycle
+//   which should be sufficient for most users (?)
 unsigned long millis(void) {
-  static unsigned long time = 0;
-  return time++;
+  return currentCycle() * MILLIS_PER_CYCLE;
 }
 unsigned long micros(void) {
   return millis()*1000;
 }
 
 
-// yes, these are pretty stupid with the current millis() and micros()
-// but hopefully they stays fine if/when we get a better millis() and micros()
-
+// for virtual hardware, there's not much point in respecting delay()
 void delay(unsigned long ms) {
+  /* An implementation that doesn't work with the current millis()
   unsigned long end = millis() + ms;
   while(millis() < end);
+  */
+  return;
 }
 
 void delayMicroseconds(unsigned int us) {
+  /* An implementation that doesn't work with the current micros()
   unsigned long end = micros() + us;
   while(micros() < end);
+  */
+  return;
 }
