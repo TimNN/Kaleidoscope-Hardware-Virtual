@@ -4,8 +4,10 @@ os:
   - linux
 install:
   - git clone --depth 1 --recurse-submodules https://github.com/keyboardio/Arduino-Boards hardware/keyboardio/avr
+    ln -s support/x86 hardware/keyboardio/x86
+    ln -s hardware/keyboardio/avr support/x86/libraries
 script:
-  - make travis-test BOARD_HARDWARE_PATH=$(pwd)/hardware
+  - BOARD=virtual make travis-test BOARD_HARDWARE_PATH=$(pwd)/hardware
 notifications:
   irc:
     channels:
