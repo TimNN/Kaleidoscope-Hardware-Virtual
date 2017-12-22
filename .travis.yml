@@ -4,8 +4,8 @@ os:
   - linux
 install:
   - git clone --depth 1 --recurse-submodules https://github.com/keyboardio/Arduino-Boards hardware/keyboardio/avr
-  - ln -s ../../support/x86 hardware/keyboardio/x86
-  - ln -s ../avr/libraries hardware/keyboardio/x86/libraries
+  - ln -s `pwd`/support/x86 ./hardware/keyboardio/x86
+  - ln -s `pwd`/hardware/keyboardio/avr/libraries ./support/x86/libraries
   - ls -R .
 script:
   - BOARD=virtual make travis-test BOARD_HARDWARE_PATH=$(pwd)/hardware
