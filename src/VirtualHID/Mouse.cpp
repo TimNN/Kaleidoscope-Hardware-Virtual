@@ -3,8 +3,13 @@
 #include "virtual_io.h"
 
 Mouse_::Mouse_(void) {}
-void Mouse_::begin(void) { end(); }
-void Mouse_::end(void) { releaseAll(); sendReport(); }
+void Mouse_::begin(void) {
+  end();
+}
+void Mouse_::end(void) {
+  releaseAll();
+  sendReport();
+}
 
 void Mouse_::releaseAll(void) {
   memset(&report, 0, sizeof(report));
@@ -39,8 +44,8 @@ void Mouse_::sendReport() {
   // Don't send if last report and this report are both empty
   // (following behavior in KeyboardioHID - see comments there)
   static HID_MouseReport_Data_t emptyReport;
-  if(memcmp(&lastReport, &report, sizeof(report)) == 0 &&
-     memcmp(&report, &emptyReport, sizeof(report)) == 0)
+  if (memcmp(&lastReport, &report, sizeof(report)) == 0 &&
+      memcmp(&report, &emptyReport, sizeof(report)) == 0)
     return;
 
   sendReportUnchecked();

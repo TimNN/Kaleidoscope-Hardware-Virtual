@@ -3,8 +3,13 @@
 #include "virtual_io.h"
 
 ConsumerControl_::ConsumerControl_(void) {}
-void ConsumerControl_::begin(void) { end(); }
-void ConsumerControl_::end(void) { releaseAll(); sendReport(); }
+void ConsumerControl_::begin(void) {
+  end();
+}
+void ConsumerControl_::end(void) {
+  releaseAll();
+  sendReport();
+}
 void ConsumerControl_::releaseAll(void) {
   memset(&_report, 0, sizeof(_report));
 }
@@ -36,7 +41,7 @@ void ConsumerControl_::release(uint16_t m) {
 void ConsumerControl_::sendReport() {
   // Only send the report if different from last report
   // (following KeyboardioHID - see comments there)
-  if(memcmp(&_lastReport, &_report, sizeof(_report)) == 0)
+  if (memcmp(&_lastReport, &_report, sizeof(_report)) == 0)
     return;
 
   sendReportUnchecked();

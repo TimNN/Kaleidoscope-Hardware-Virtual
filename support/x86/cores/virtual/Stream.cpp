@@ -2,8 +2,7 @@
 
 #include "Stream.h"
 
-long 
-  Stream::parseInt(LookaheadMode lookahead, char ignore)
-{
-   return 0;
+long
+Stream::parseInt(LookaheadMode lookahead, char ignore) {
+  return 0;
 }

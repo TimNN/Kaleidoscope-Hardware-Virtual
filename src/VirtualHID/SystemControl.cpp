@@ -3,8 +3,12 @@
 #include "virtual_io.h"
 
 SystemControl_::SystemControl_(void) {}
-void SystemControl_::begin(void) { releaseAll(); }
-void SystemControl_::end(void) { releaseAll(); }
+void SystemControl_::begin(void) {
+  releaseAll();
+}
+void SystemControl_::end(void) {
+  releaseAll();
+}
 void SystemControl_::releaseAll(void) {
   uint8_t _report = 0x00;
   sendReport(&_report, sizeof(_report));
@@ -15,7 +19,9 @@ void SystemControl_::write(uint8_t s) {
   release();
 }
 
-void SystemControl_::release(void) { releaseAll(); }
+void SystemControl_::release(void) {
+  releaseAll();
+}
 
 void SystemControl_::press(uint8_t s) {
   sendReport(&s, sizeof(s));

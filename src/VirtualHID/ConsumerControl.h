@@ -19,22 +19,22 @@ typedef union {
 } HID_ConsumerControlReport_Data_t;
 
 class ConsumerControl_ {
-  public:
-    ConsumerControl_(void);
-    void begin(void);
-    void end(void);
-    void write(uint16_t m);
-    void press(uint16_t m);
-    void release(uint16_t m);
-    void releaseAll(void);
-    void sendReport(void);
+ public:
+  ConsumerControl_(void);
+  void begin(void);
+  void end(void);
+  void write(uint16_t m);
+  void press(uint16_t m);
+  void release(uint16_t m);
+  void releaseAll(void);
+  void sendReport(void);
 
-  protected:
-    HID_ConsumerControlReport_Data_t _report;
-    HID_ConsumerControlReport_Data_t _lastReport;
+ protected:
+  HID_ConsumerControlReport_Data_t _report;
+  HID_ConsumerControlReport_Data_t _lastReport;
 
-  private:
-    void sendReportUnchecked(void);
+ private:
+  void sendReportUnchecked(void);
 };
 
 extern ConsumerControl_ ConsumerControl;

@@ -13,48 +13,54 @@ static std::istream* input = NULL;
 static std::ostream* usbstream = NULL;
 static unsigned cycle = 0;
 
-bool isInteractive(void) { return interactive; }
+bool isInteractive(void) {
+  return interactive;
+}
 
-unsigned currentCycle(void) { return cycle; }
-void nextCycle(void) { cycle++; }
+unsigned currentCycle(void) {
+  return cycle;
+}
+void nextCycle(void) {
+  cycle++;
+}
 
 void logUSBEvent(std::string descrip, void* data, int length) {
-  if(usbstream) {
+  if (usbstream) {
     *usbstream << "Cycle " << std::dec << currentCycle() << ": " << descrip << ": 0x" << std::hex;
     unsigned char* report = (unsigned char*) data;
-    for(int i = 0; i < length; i++) *usbstream << std::setfill('0') << std::setw(2) << (unsigned int)(report[i]);  // pad with 0's to total of 2 characters
+    for (int i = 0; i < length; i++) *usbstream << std::setfill('0') << std::setw(2) << (unsigned int)(report[i]); // pad with 0's to total of 2 characters
     *usbstream << std::endl;
   }
 }
 
 void logUSBEvent_keyboard(std::string descrip) {
-  if(usbstream) {
+  if (usbstream) {
     *usbstream << "Cycle " << std::dec << currentCycle() << ": " << descrip << std::endl;
   }
 }
 
 bool initVirtualInput(int argc, char* argv[]) {
-  if(argc < 2 || strcmp(argv[1], "?") == 0) {
+  if (argc < 2 || strcmp(argv[1], "?") == 0) {
     printHelp();
     return false;
-  } else if(argc > 2) {
-    std::cerr << "Error: more arguments than expected (got " << argc-1 << ")" << std::endl;
+  } else if (argc > 2) {
+    std::cerr << "Error: more arguments than expected (got " << argc - 1 << ")" << std::endl;
     return false;
   }
 
-  if(strcmp(argv[1], "-i") == 0) {
+  if (strcmp(argv[1], "-i") == 0) {
     interactive = true;
     input = &std::cin;
   } else {
     interactive = false;
     input = new std::ifstream(argv[1]);
-    if(!input || !(*input)) {
+    if (!input || !(*input)) {
       std::cerr << "Error opening input file \"" << argv[1] << "\"" << std::endl;
       return false;
     }
   }
 
-  if(mkdir("results", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) && errno != EEXIST) {
+  if (mkdir("results", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) && errno != EEXIST) {
     std::cerr << "Error creating directory 'results', errno " << errno << std::endl;
     return false;
   }
@@ -64,14 +70,14 @@ bool initVirtualInput(int argc, char* argv[]) {
 }
 
 std::string getLineOfInput(bool anythingHeld) {
-  if(interactive) {
+  if (interactive) {
     std::cout << "Enter a command for this scan cycle, or ? or 'help' for help." << std::endl;
-    if(anythingHeld) std::cout << "+> ";
+    if (anythingHeld) std::cout << "+> ";
     else std::cout << "> ";
   }
   std::string line;
   std::getline(*input, line);
-  if(!interactive && !(*input)) exit(0);  // reached EOF or other file error
+  if (!interactive && !(*input)) exit(0); // reached EOF or other file error
   return line;
 }
 

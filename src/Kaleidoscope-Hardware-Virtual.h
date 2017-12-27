@@ -34,49 +34,53 @@ typedef struct {
 #define CRGB(r, g, b) (cRGB){r, g, b}
 
 class Virtual {
-  public:
-     
-    typedef enum {
-      PRESSED,
-      NOT_PRESSED,
-      TAP,
-    } keystate;
-    
-    Virtual(void);
-    void setup(void);
+ public:
 
-    void readMatrix(void);
-    void actOnMatrixScan(void);
+  typedef enum {
+    PRESSED,
+    NOT_PRESSED,
+    TAP,
+  } keystate;
 
-    void maskKey(byte row, byte col);
-    void unMaskKey(byte row, byte col);
-    bool isKeyMasked(byte row, byte col);
-    void maskHeldKeys(void);
+  Virtual(void);
+  void setup(void);
 
-    void syncLeds(void) {}
-    void setCrgbAt(byte /*row*/, byte /*col*/, cRGB /*color*/) {}
-    void setCrgbAt(uint8_t /*i*/, cRGB /*color*/) {}
-    cRGB getCrgbAt(uint8_t /*i*/) { return CRGB(0,0,0); }
-    void scanMatrix(void) {
-      readMatrix();
-      actOnMatrixScan();
-    }
-    
-    void setEnableReadMatrix(bool state) { _readMatrixEnabled = state; }
-    
-    void setKeystate(byte row, byte col, keystate ks);
+  void readMatrix(void);
+  void actOnMatrixScan(void);
 
-  private:
+  void maskKey(byte row, byte col);
+  void unMaskKey(byte row, byte col);
+  bool isKeyMasked(byte row, byte col);
+  void maskHeldKeys(void);
 
-    keystate keystates[ROWS][COLS];
-    keystate keystates_prev[ROWS][COLS];  
-    
-    bool _readMatrixEnabled;
+  void syncLeds(void) {}
+  void setCrgbAt(byte /*row*/, byte /*col*/, cRGB /*color*/) {}
+  void setCrgbAt(uint8_t /*i*/, cRGB /*color*/) {}
+  cRGB getCrgbAt(uint8_t /*i*/) {
+    return CRGB(0, 0, 0);
+  }
+  void scanMatrix(void) {
+    readMatrix();
+    actOnMatrixScan();
+  }
 
-    bool anythingHeld();
+  void setEnableReadMatrix(bool state) {
+    _readMatrixEnabled = state;
+  }
 
-    // Super inefficient, but fine for our purposes
-    bool mask[ROWS][COLS];
+  void setKeystate(byte row, byte col, keystate ks);
+
+ private:
+
+  keystate keystates[ROWS][COLS];
+  keystate keystates_prev[ROWS][COLS];
+
+  bool _readMatrixEnabled;
+
+  bool anythingHeld();
+
+  // Super inefficient, but fine for our purposes
+  bool mask[ROWS][COLS];
 };
 
 #define KEYMAP_STACKED(                                                 \

@@ -22,7 +22,9 @@
 #include <iostream>
 
 // Declared weak in Arduino.h to allow user redefinitions.
-int atexit(void (* /*func*/ )()) throw () { return 0; }
+int atexit(void (* /*func*/)()) throw () {
+  return 0;
+}
 
 // Weak empty variant initialization function.
 // May be redefined by variant files.
@@ -37,22 +39,21 @@ void init(void) {
   // We don't need to do anything.
 }
 
-int main(int argc, char* argv[])
-{
-    if(!initVirtualInput(argc, argv)) return 1;
+int main(int argc, char* argv[]) {
+  if (!initVirtualInput(argc, argv)) return 1;
 
-	init();
-	initVariant();
+  init();
+  initVariant();
 
-	setup();
+  setup();
 
-    while(true) {
-      std::cout << "Starting cycle " << currentCycle() << std::endl;
-      loop();
-      if (serialEventRun) serialEventRun();
-      nextCycle();
-    }
+  while (true) {
+    std::cout << "Starting cycle " << currentCycle() << std::endl;
+    loop();
+    if (serialEventRun) serialEventRun();
+    nextCycle();
+  }
 
-	return 0;
+  return 0;
 }
 

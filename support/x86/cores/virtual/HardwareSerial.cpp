@@ -12,10 +12,10 @@ bool Serial2_available() __attribute__((weak));
 bool Serial3_available() __attribute__((weak));
 
 void serialEventRun(void) {
-  if(Serial0_available && serialEvent && Serial0_available()) serialEvent();
-  if(Serial1_available && serialEvent && Serial1_available()) serialEvent1();
-  if(Serial2_available && serialEvent && Serial2_available()) serialEvent2();
-  if(Serial3_available && serialEvent && Serial3_available()) serialEvent3();
+  if (Serial0_available && serialEvent && Serial0_available()) serialEvent();
+  if (Serial1_available && serialEvent && Serial1_available()) serialEvent1();
+  if (Serial2_available && serialEvent && Serial2_available()) serialEvent2();
+  if (Serial3_available && serialEvent && Serial3_available()) serialEvent3();
 }
 
 unsigned HardwareSerial::serialNumber = 0;
@@ -29,18 +29,18 @@ void HardwareSerial::begin(unsigned long baud, byte config) {
 }
 
 void HardwareSerial::end() {
-  if(out) fclose(out);
+  if (out) fclose(out);
 }
 
 int HardwareSerial::availableForWrite(void) {
   return out ? 1000 : 0;
 }
 size_t HardwareSerial::write(uint8_t c) {
-  if(out) fputc(c, out);
+  if (out) fputc(c, out);
   return 1;
 }
 void HardwareSerial::flush(void) {
-  if(out) fflush(out);
+  if (out) fflush(out);
 }
 
 // TODO make input serial connections better.
