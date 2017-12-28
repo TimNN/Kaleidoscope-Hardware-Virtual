@@ -69,6 +69,7 @@ class Virtual {
   }
 
   void setKeystate(byte row, byte col, keystate ks);
+  keystate getKeystate(byte row, byte col) const;
 
  private:
 
