@@ -58,6 +58,9 @@ class Keyboard_ {
   HID_KeyboardReport_Data_t _lastKeyReport;
 
   KeyboardReportConsumer_ *_keyboardReportConsumer;
+
+  uint8_t _systemLEDStates;  // returned by getLEDs
+  bool _numlockPressed;  // whether numlock is currently pressed
 };
 
 extern Keyboard_ Keyboard;

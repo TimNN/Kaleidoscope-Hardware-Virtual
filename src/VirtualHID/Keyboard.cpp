@@ -1,4 +1,5 @@
 #include "Keyboard.h"
+#include "LEDs.h"
 #include <iostream>
 #include <sstream>
 #include "virtual_io.h"
@@ -7,7 +8,8 @@
 static StandardKeyboardReportConsumer standardKeyboardReportConsumer;
 
 Keyboard_::Keyboard_(void)
-  :  _keyboardReportConsumer(&standardKeyboardReportConsumer) {
+  :  _keyboardReportConsumer(&standardKeyboardReportConsumer),
+     _systemLEDStates(0) {
 }
 
 void Keyboard_::begin(void) {
@@ -17,9 +19,23 @@ void Keyboard_::end(void) {
   releaseAll();
 }
 
-// press(), release(), releaseAll(), isModifierActive(), and wasModifierActive() are all
-// taken directly from KeyboardioHID's versions
 size_t Keyboard_::press(uint8_t k) {
+  if (k == HID_KEYPAD_NUM_LOCK_AND_CLEAR ||
+      k == HID_KEYBOARD_LOCKING_NUM_LOCK) {
+    if (_numlockPressed) {
+      // do nothing, just pressed again while already pressed
+    } else {
+      _numlockPressed = true;
+      if (_systemLEDStates & LED_NUM_LOCK) {
+        _systemLEDStates &= ~LED_NUM_LOCK;  // reset LED_NUM_LOCK
+      } else {
+        _systemLEDStates |= LED_NUM_LOCK;  // set LED_NUM_LOCK
+      }
+    }
+  }
+
+  // The remainder of this function is taken directly from KeyboardioHID's version
+
   // If the key is in the range of 'printable' keys
   if (k <= HID_LAST_KEY) {
     uint8_t bit = 1 << (uint8_t(k) % 8);
@@ -38,7 +54,15 @@ size_t Keyboard_::press(uint8_t k) {
   // No empty/pressed key was found
   return 0;
 }
+
 size_t Keyboard_::release(uint8_t k) {
+  if (k == HID_KEYPAD_NUM_LOCK_AND_CLEAR ||
+      k == HID_KEYBOARD_LOCKING_NUM_LOCK) {
+    _numlockPressed = false;
+  }
+
+  // The remainder of this function is taken directly from KeyboardioHID's version
+
   // If we're releasing a printable key
   if (k <= HID_LAST_KEY) {
     uint8_t bit = 1 << (k % 8);
@@ -57,6 +81,9 @@ size_t Keyboard_::release(uint8_t k) {
   // No empty/pressed key was found
   return 0;
 }
+
+// releaseAll(), isModifierActive(), and wasModifierActive() are all
+// taken directly from KeyboardioHID's versions
 void Keyboard_::releaseAll(void) {
   memset(&_keyReport.allkeys, 0x00, sizeof(_keyReport.allkeys));
 }
@@ -75,9 +102,8 @@ boolean Keyboard_::wasModifierActive(uint8_t k) {
   return false;
 }
 
-// TODO: Emulate this in a reasonable way rather than always returning 0
 uint8_t Keyboard_::getLEDs() {
-  return 0;
+  return _systemLEDStates;
 }
 
 // For each bit set in 'bitfield', output the corresponding string to 'stream'
