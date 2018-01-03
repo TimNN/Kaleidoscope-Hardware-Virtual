@@ -1,9 +1,12 @@
 #include "Keyboard.h"
 #include "LEDs.h"
+#include "Logging.h"
+#include "virtual_io.h"
 #include <iostream>
 #include <sstream>
-#include "virtual_io.h"
 #include <assert.h>
+
+using namespace kaleidoscope::logging;
 
 static StandardKeyboardReportConsumer standardKeyboardReportConsumer;
 
@@ -198,7 +201,7 @@ void StandardKeyboardReportConsumer::processKeyboardReport(
     }
   }
 
-  std::cout << "Sent virtual HID report. Pressed keys: " << keypresses.str() << std::endl;
+  log_info("Sent virtual HID report. Pressed keys: %s\n", keypresses.str().c_str());
   logUSBEvent_keyboard("Keyboard HID report; pressed keys: " + keypresses.str());
 }
 
