@@ -30,6 +30,10 @@ typedef struct {
   uint8_t g;
   uint8_t b;
 } cRGB;
+typedef union {
+  uint8_t rows[4];
+  uint32_t all;
+} keydata_t;
 
 #define CRGB(r, g, b) (cRGB){r, g, b}
 
