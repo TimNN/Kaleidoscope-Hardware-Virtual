@@ -71,7 +71,8 @@ class Virtual {
 
   void setKeystate(byte row, byte col, keystate ks);
   keystate getKeystate(byte row, byte col) const;
-
+  void attachToHost(void);
+  void detachFromHost(void);
  private:
 
   keystate keystates[ROWS][COLS];

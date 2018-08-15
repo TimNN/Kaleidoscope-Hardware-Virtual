@@ -291,4 +291,11 @@ cRGB Virtual::getCrgbAt(byte i) const {
   return ledStates[i];
 }
 
+void Virtual::attachToHost() const {
+	// TODO - stub implementation
+}
+void Virtual::detachFromHost() const {
+	// TODO - stub implementation
+}
+
 HARDWARE_IMPLEMENTATION KeyboardHardware;
