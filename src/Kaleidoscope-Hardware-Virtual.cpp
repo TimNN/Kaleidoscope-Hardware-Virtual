@@ -175,6 +175,20 @@ void Virtual::actOnMatrixScan() {
   }
 }
 
+bool Virtual::isKeyswitchPressed(byte row, byte col) {
+  if (keystates[row][col] == NOT_PRESSED) {
+	return false; 
+
+  }
+ return true;
+}
+
+bool Virtual::isKeyswitchPressed(uint8_t keyIndex) {
+  keyIndex--;
+  return isKeyswitchPressed(keyIndex / COLS, keyIndex % COLS);
+}
+
+
 static rc getRCfromPhysicalKey(std::string keyname) {
   if (keyname == "prog") return {0, 0};
   else if (keyname == "1") return {0, 1};
