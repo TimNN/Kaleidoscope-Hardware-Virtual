@@ -311,10 +311,12 @@ cRGB Virtual::getCrgbAt(byte i) const {
   return ledStates[i];
 }
 
-void Virtual::attachToHost() const {
+void Virtual::attachToHost(void) {
+	return;
 	// TODO - stub implementation
 }
-void Virtual::detachFromHost() const {
+void Virtual::detachFromHost(void)  {
+	return;
 	// TODO - stub implementation
 }
 
