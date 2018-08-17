@@ -77,6 +77,7 @@ class Virtual {
   keystate getKeystate(byte row, byte col) const;
   void attachToHost(void);
   void detachFromHost(void);
+  void setKeyscanInterval(uint8_t interval);
  private:
 
   keystate keystates[ROWS][COLS];

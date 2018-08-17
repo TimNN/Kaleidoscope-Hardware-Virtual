@@ -127,6 +127,12 @@ void Virtual::setKeystate(byte row, byte col, keystate ks) {
   keystates[row][col] = ks;
 }
 
+void Virtual::setKeyscanInterval(uint8_t interval) {
+	// TODO implement;
+return;
+
+}
+
 Virtual::keystate Virtual::getKeystate(byte row, byte col) const {
   return keystates[row][col];
 }
