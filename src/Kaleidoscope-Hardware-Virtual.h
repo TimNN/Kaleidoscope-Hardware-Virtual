@@ -106,6 +106,16 @@ class Virtual {
    * @returns true if the key is pressed, false otherwise.
    */
   bool isKeyswitchPressed(uint8_t keyIndex);
+  /**
+   * Check the number of key switches currently pressed.
+   *
+   * @returns the number of keys pressed.
+   */
+  uint8_t pressedKeyswitchCount();
+
+
+
+
  private:
 
   keystate keystates[ROWS][COLS];
