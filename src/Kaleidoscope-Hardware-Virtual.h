@@ -40,6 +40,10 @@ typedef union {
 class Virtual {
  public:
 
+  static const uint8_t matrix_rows = ROWS;
+  static const uint8_t matrix_columns = COLS;
+  static const uint8_t led_count = LED_COUNT;
+
   typedef enum {
     PRESSED,
     NOT_PRESSED,
@@ -238,3 +242,7 @@ constexpr byte R3C15 = keyIndex(3, 15);
     {r2c0, r2c1, r2c2, r2c3, r2c4, r2c5, r2c6, r2c7, r2c8, r2c9, r2c10, r2c11, r2c12, r2c13, r2c14, r2c15}, \
     {r3c0, r3c1, r3c2, r3c3, r3c4, r3c5, r3c6, r3c7, r3c8, r3c9, r3c10, r3c11, r3c12, r3c13, r3c14, r3c15}, \
   }
+
+#undef COLS
+#undef ROWS
+#undef LED_COUNT
